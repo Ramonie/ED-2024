@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Texto com Undo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 16px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Editor de Texto com Undo</h2>
+    
+    <textarea id="editor" placeholder="Comece a digitar..." oninput="salvarEstado()"></textarea><br>
+    <button id="undoButton" onclick="desfazer()">Desfazer</button>
+
+    <script>
+        class PilhaUndo {
+            constructor() {
+                this.pilha = [];
+            }
+
+            // Adiciona um novo estado na pilha
+            adicionarEstado(estado) {
+                this.pilha.push(estado);
+            }
+
+            // Desfaz a última ação e retorna o estado anterior
+            desfazer() {
+                if (this.pilha.length > 0) {
+                    return this.pilha.pop();
+                } else {
+                    return null; // Se não houver nada para desfazer
+                }
+            }
+
+            // Verifica se há algo para desfazer
+            temUndo() {
+                return this.pilha.length > 0;
+            }
+        }
+
+        // Inicializando a pilha
+        const pilhaUndo = new PilhaUndo();
+        const editor = document.getElementById("editor");
+        const undoButton = document.getElementById("undoButton");
+
+        // Função para salvar o estado do editor na pilha
+        function salvarEstado() {
+            pilhaUndo.adicionarEstado(editor.value);
+            // Habilitar o botão "desfazer" se houver algo na pilha
+            undoButton.disabled = !pilhaUndo.temUndo();
+        }
+
+        // Função para desfazer a última ação
+        function desfazer() {
+            const estadoAnterior = pilhaUndo.desfazer();
+            if (estadoAnterior !== null) {
+                editor.value = estadoAnterior; // Restaurando o estado anterior
+            }
+            // Desabilitar o botão se não houver mais ações para desfazer
+            undoButton.disabled = !pilhaUndo.temUndo();
+        }
+
+        // Inicializa a pilha com o estado inicial do editor (vazio)
+        pilhaUndo.adicionarEstado('');
+    </script>
+</body>
+</html>
