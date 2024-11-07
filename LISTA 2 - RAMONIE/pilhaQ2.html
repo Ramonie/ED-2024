@@ -36,49 +36,49 @@
                 this.pilha = [];
             }
 
-            // Adiciona um novo estado na pilha
+            
             adicionarEstado(estado) {
                 this.pilha.push(estado);
             }
 
-            // Desfaz a última ação e retorna o estado anterior
+           
             desfazer() {
                 if (this.pilha.length > 0) {
                     return this.pilha.pop();
                 } else {
-                    return null; // Se não houver nada para desfazer
+                    return null; 
                 }
             }
 
-            // Verifica se há algo para desfazer
+            
             temUndo() {
                 return this.pilha.length > 0;
             }
         }
 
-        // Inicializando a pilha
+        
         const pilhaUndo = new PilhaUndo();
         const editor = document.getElementById("editor");
         const undoButton = document.getElementById("undoButton");
 
-        // Função para salvar o estado do editor na pilha
+        
         function salvarEstado() {
             pilhaUndo.adicionarEstado(editor.value);
-            // Habilitar o botão "desfazer" se houver algo na pilha
+           
             undoButton.disabled = !pilhaUndo.temUndo();
         }
 
-        // Função para desfazer a última ação
+        
         function desfazer() {
             const estadoAnterior = pilhaUndo.desfazer();
             if (estadoAnterior !== null) {
-                editor.value = estadoAnterior; // Restaurando o estado anterior
+                editor.value = estadoAnterior; 
             }
-            // Desabilitar o botão se não houver mais ações para desfazer
+            
             undoButton.disabled = !pilhaUndo.temUndo();
         }
 
-        // Inicializa a pilha com o estado inicial do editor (vazio)
+        
         pilhaUndo.adicionarEstado('');
     </script>
 </body>
