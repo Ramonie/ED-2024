@@ -1,0 +1,83 @@
+//1. Criar uma classe ConjuntoPersonalizado
+class ConjuntoPersonalizado {
+    constructor() {
+        this.itens = new Set();
+    }
+
+    // Adicionar um elemento ao conjunto
+    add(elemento) {
+        this.itens.add(elemento);
+    }
+
+    // Remover um elemento do conjunto
+    delete(elemento) {
+        this.itens.delete(elemento);
+    }
+
+    // Verificar se o elemento está no conjunto
+    has(elemento) {
+        return this.itens.has(elemento);
+    }
+
+    // Retornar todos os elementos do conjunto
+    values() {
+        return Array.from(this.itens);
+    }
+
+    // União entre dois conjuntos
+    union(outroConjunto) {
+        const resultado = new ConjuntoPersonalizado();
+        this.values().forEach(valor => resultado.add(valor));
+        outroConjunto.values().forEach(valor => resultado.add(valor));
+        return resultado;
+    }
+
+    // Interseção entre dois conjuntos
+    intersection(outroConjunto) {
+        const resultado = new ConjuntoPersonalizado();
+        this.values().forEach(valor => {
+            if (outroConjunto.has(valor)) {
+                resultado.add(valor);
+            }
+        });
+        return resultado;
+    }
+
+    // Diferença entre dois conjuntos
+    difference(outroConjunto) {
+        const resultado = new ConjuntoPersonalizado();
+        this.values().forEach(valor => {
+            if (!outroConjunto.has(valor)) {
+                resultado.add(valor);
+            }
+        });
+        return resultado;
+    }
+
+    // Verificar se este conjunto é um subconjunto de outro
+    isSubsetOf(outroConjunto) {
+        return this.values().every(valor => outroConjunto.has(valor));
+    }
+}
+//2. Criar dois conjuntos e testá-los:
+console.log("Criando dois conjuntos e testando")
+const conjuntoA = new ConjuntoPersonalizado();
+[1, 2, 3, 4].forEach(valor => conjuntoA.add(valor));
+
+const conjuntoB = new ConjuntoPersonalizado();
+[3, 4, 5, 6].forEach(valor => conjuntoB.add(valor));
+// Testando os conjuntos
+console.log("Valores do Conjunto A:", conjuntoA.values());
+console.log("Valores do Conjunto B:", conjuntoB.values());
+//3. Realizar as operações:
+console.log("Realizando operações")
+const uniao = conjuntoA.union(conjuntoB);
+console.log("União de A e B:", uniao.values());
+
+const intersecao = conjuntoA.intersection(conjuntoB);
+console.log("Interseção de A e B:", intersecao.values());
+
+const diferenca = conjuntoA.difference(conjuntoB);
+console.log("Diferença de A em relação a B:", diferenca.values());
+
+console.log("A é subconjunto de B?", conjuntoA.isSubsetOf(conjuntoB));
